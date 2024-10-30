@@ -19,19 +19,17 @@ namespace AnnonsDatabas
             string username = textBoxUsername.Text.Trim();
             string password = textBoxPassword.Text.Trim();
 
-            // Fetch the account from the database
             Account account = accountRepo.GetByUsername(username);
 
-            // Check if account exists and password is correct
             if (account != null && account.UserPassword == password)
             {
-                UserManager.LoggedInUser = account; // Keep track of the logged-in user
+                UserManager.LoggedInUser = account;
                 MessageBox.Show("Du är inloggad!");
 
                 FormAdvertisments formAdvertisments = new FormAdvertisments();
-                formAdvertisments.RefreshUserStatus(); // Update the main form with the logged-in user
+                formAdvertisments.RefreshUserStatus();
                 this.Hide();
-                formAdvertisments.Show(); // Show the main form
+                formAdvertisments.Show();
             }
             else
             {
@@ -41,11 +39,10 @@ namespace AnnonsDatabas
 
         private void buttonRegister_Click(object sender, EventArgs e)
         {
-            string username = textBoxUsername.Text.Trim(); // Assuming you have a TextBox for username
-            string password = textBoxPassword.Text.Trim(); // Assuming you have a TextBox for password
+            string username = textBoxUsername.Text.Trim();
+            string password = textBoxPassword.Text.Trim();
 
-            // Create a new account
-            Account newAccount = new Account(0, username, password); // ID will be set by the database
+            Account newAccount = new Account(0, username, password);
 
             if (accountRepo.Register(newAccount))
             {
@@ -60,11 +57,10 @@ namespace AnnonsDatabas
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            UserManager.LoggedInUser = null; // Log out the user
-           // UpdateLoggedInUserLabel(); // Update the label after logout
+            UserManager.LoggedInUser = null;
             MessageBox.Show("Du är nu utloggad."); 
             FormAdvertisments formAdvertisments = new FormAdvertisments();
-            formAdvertisments.RefreshUserStatus(); // Update the main form with the logged-in user
+            formAdvertisments.RefreshUserStatus();
             this.Hide();
             formAdvertisments.Show();
         }

@@ -6,7 +6,6 @@ namespace AnnonsDatabas.Repository
 {
     public class CategoryRepo
     {
-
         public List<Category> GetList()
         {
             string sql = "SELECT Id, CategoryName FROM Category";

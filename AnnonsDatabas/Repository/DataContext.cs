@@ -37,7 +37,6 @@ namespace AnnonsDatabas.Repository
                 {
                     cmd.Parameters.Add(parameter);
                 }
-
                 cmd.ExecuteNonQuery();
             }
         }

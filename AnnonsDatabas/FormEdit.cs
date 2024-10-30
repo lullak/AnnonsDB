@@ -6,31 +6,27 @@ namespace AnnonsDatabas
 {
     public partial class FormEdit : Form
     {
-        private Advertisement _advertisement; // Field to hold the advertisement being edited
-        private List<Category> _categories; // Field to hold the list of categories
-
-        // Modify the constructor to accept categories
+        private Advertisement _advertisement;
+        private List<Category> _categories;
         public FormEdit(Advertisement advertisement = null, List<Category> categories = null)
         {
             InitializeComponent();
 
-            _advertisement = advertisement; // Store the advertisement if it is passed, which indicates we are editing
-            _categories = categories; // Store the categories for loading into the ComboBox
+            _advertisement = advertisement;
+            _categories = categories;
 
-            // Load categories into the combo box
             LoadCategories();
 
-            // If an advertisement is provided, fill in the details for editing
             if (_advertisement != null)
             {
                 FillFormWithAdvertisementDetails();
-                buttonSave.Visible = false; // Hide Save button if editing
-                buttonEdit.Visible = true; // Show Edit button
+                buttonSave.Visible = false;
+                buttonEdit.Visible = true;
             }
             else
             {
-                buttonEdit.Visible = false; // Hide Edit button if creating new
-                buttonSave.Visible = true; // Show Save button
+                buttonEdit.Visible = false;
+                buttonSave.Visible = true;
             }
         }
 
@@ -39,12 +35,12 @@ namespace AnnonsDatabas
             if (_categories != null && _categories.Count > 0)
             {
                 comboBoxCategories.DataSource = _categories;
-                comboBoxCategories.DisplayMember = "CategoryName"; // Assuming category has a Name property
-                comboBoxCategories.ValueMember = "Id"; // Assuming category has an Id property
+                comboBoxCategories.DisplayMember = "CategoryName";
+                comboBoxCategories.ValueMember = "Id";
             }
             else
             {
-                MessageBox.Show("No categories available."); // Debugging message if categories are null
+                MessageBox.Show("Inga kategorier är tillgänliga.");
             }
         }
 
@@ -55,49 +51,45 @@ namespace AnnonsDatabas
                 textBoxTitle.Text = _advertisement.Title;
                 textBoxDescription.Text = _advertisement.AdDescription;
                 numericUpDownPrice.Value = _advertisement.Price;
-                comboBoxCategories.SelectedValue = _advertisement.CategoryId; // Set selected category
+                comboBoxCategories.SelectedValue = _advertisement.CategoryId;
             }
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            // Gather input values from the form
             string title = textBoxTitle.Text.Trim();
             string description = textBoxDescription.Text.Trim();
             decimal price = numericUpDownPrice.Value;
-            int categoryId = (int)comboBoxCategories.SelectedValue; // Assuming category selection is valid
+            int categoryId = (int)comboBoxCategories.SelectedValue;
 
-            // Validate inputs
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description) || price <= 0)
             {
-                MessageBox.Show("Please fill in all fields");
+                MessageBox.Show("Fyll i alla fält!");
                 return;
             }
 
-            // Update the advertisement object with new values
             _advertisement.Title = title;
             _advertisement.AdDescription = description;
             _advertisement.Price = price;
             _advertisement.CategoryId = categoryId;
 
             var adRepo = new AdvertisementRepo();
-            // Save changes to the database
+
             adRepo.Update(_advertisement);
 
-            MessageBox.Show("Advertisement updated successfully.");
-            this.DialogResult = DialogResult.OK; // Return OK result
-            this.Close(); // Close the form
+            MessageBox.Show("Annonsen är nu uppdaterad.");
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            // Gather input values from the form
+
             string title = textBoxTitle.Text.Trim();
             string description = textBoxDescription.Text.Trim();
             decimal price = numericUpDownPrice.Value;
-            int categoryId = (int)comboBoxCategories.SelectedValue; // Assuming category selection is valid
+            int categoryId = (int)comboBoxCategories.SelectedValue;
 
-            // Validate inputs
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description) || price <= 0)
             {
                 MessageBox.Show("Fyll i alla fält!");
@@ -105,15 +97,13 @@ namespace AnnonsDatabas
             }
 
             var adRepo = new AdvertisementRepo();
-            // Create a new advertisement object
             var newAd = new Advertisement(0, title, description, price, categoryId, UserManager.LoggedInUser.Id, DateTime.Now);
 
-            // Save to the database
             adRepo.Save(newAd);
             MessageBox.Show("Annonsen är nu skapad.");
 
-            this.DialogResult = DialogResult.OK; // Return OK result
-            this.Close(); // Close the form
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

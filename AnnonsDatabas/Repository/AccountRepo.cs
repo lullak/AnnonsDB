@@ -36,39 +36,18 @@ namespace AnnonsDatabas.Repository
             return new Account(
                 (int)row["Id"],
                 row["Username"].ToString(),
-                row["UserPassword"].ToString() // Use UserPassword instead of UserPassword
+                row["UserPassword"].ToString() 
             );
         }
 
         public bool Register(Account account)
         {
-            // Check if the username already exists
             if (GetByUsername(account.Username) != null)
             {
-                return false; // Username already taken
+                return false; 
             }
-
-            // Save the account
             Save(account);
-            return true; // Registration successful
-        }
-
-        public List<Account> GetList()
-        {
-            string sql = "SELECT Id, Username, UserPassword FROM Account";
-            DataTable data = DataContext.ExecuteQueryReturnTable(sql, new List<SqlParameter>());
-
-            List<Account> accounts = new List<Account>();
-            foreach (DataRow row in data.Rows)
-            {
-                accounts.Add(new Account(
-                    (int)row["Id"],
-                    row["Username"].ToString(),
-                    row["UserPassword"].ToString() // Use UserPassword instead of UserPassword
-                ));
-            }
-
-            return accounts;
+            return true;
         }
     }
 }

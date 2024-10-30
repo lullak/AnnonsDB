@@ -7,12 +7,10 @@ namespace AnnonsDatabas.Repository
 {
     public class AdvertisementRepo
     {
-
         public List<Advertisement> GetList(string sortBy = "CreatedDate", int? categoryId = null)
         {
             string sql = "SELECT Id, Title, AdDescription, Price, CategoryId, CreatedBy, CreatedDate FROM Advertisement";
 
-            // Only add WHERE clause if categoryId is specified
             List<SqlParameter> parameters = new List<SqlParameter>();
             if (categoryId.HasValue)
             {
@@ -20,7 +18,6 @@ namespace AnnonsDatabas.Repository
                 parameters.Add(new SqlParameter("@CategoryId", categoryId.Value));
             }
 
-            // Add ORDER BY based on sortBy parameter
             switch (sortBy)
             {
                 case "Price":
@@ -53,26 +50,22 @@ namespace AnnonsDatabas.Repository
 
         public List<Advertisement> SearchAdvertisements(string title, int? categoryId = null)
         {
-            // Build the base SQL query
             string sql = "SELECT Id, Title, AdDescription, Price, CategoryId, CreatedBy, CreatedDate FROM Advertisement WHERE 1=1";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
-            // If a title is provided, add a condition for it
             if (!string.IsNullOrEmpty(title))
             {
                 sql += " AND Title LIKE @Title";
-                parameters.Add(new SqlParameter("@Title", "%" + title + "%")); // Using LIKE for partial matches
+                parameters.Add(new SqlParameter("@Title", "%" + title + "%"));
             }
 
-            // If a categoryId is provided, add a condition for it
             if (categoryId.HasValue)
             {
                 sql += " AND CategoryId = @CategoryId";
                 parameters.Add(new SqlParameter("@CategoryId", categoryId.Value));
             }
 
-            // Execute the query
             DataTable data = DataContext.ExecuteQueryReturnTable(sql, parameters);
 
             List<Advertisement> advertisements = new List<Advertisement>();
@@ -88,7 +81,6 @@ namespace AnnonsDatabas.Repository
                     Convert.ToDateTime(row["CreatedDate"])
                 ));
             }
-
             return advertisements;
         }
 
@@ -100,7 +92,7 @@ namespace AnnonsDatabas.Repository
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Title", advertisement.Title),
-                new SqlParameter("@AdDescription", advertisement.AdDescription), // Keep this consistent
+                new SqlParameter("@AdDescription", advertisement.AdDescription),
                 new SqlParameter("@Price", advertisement.Price),
                 new SqlParameter("@CategoryId", advertisement.CategoryId),
                 new SqlParameter("@CreatedBy", advertisement.CreatedBy)
@@ -116,10 +108,10 @@ namespace AnnonsDatabas.Repository
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter("@Title", advertisement.Title),
-                new SqlParameter("@AdDescription", advertisement.AdDescription), // Ensure this matches the SQL parameter
+                new SqlParameter("@AdDescription", advertisement.AdDescription),
                 new SqlParameter("@Price", advertisement.Price),
                 new SqlParameter("@CategoryId", advertisement.CategoryId),
-                new SqlParameter("@Id", advertisement.Id) // This is needed to identify the record to update
+                new SqlParameter("@Id", advertisement.Id)
             };
 
             DataContext.ExecuteNonQuery(sql, parameters);

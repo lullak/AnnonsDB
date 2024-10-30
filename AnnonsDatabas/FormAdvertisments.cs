@@ -19,32 +19,28 @@ namespace AnnonsDatabas
 
         private void UpdateButtonVisibility()
         {
-            // Show create button if user is logged in
             buttonCreateAd.Visible = UserManager.LoggedInUser != null;
 
-            // Check if a user is logged in and an ad is selected
             if (UserManager.LoggedInUser != null && listBoxAds.SelectedItem is Advertisement selectedAd)
             {
-                // Show edit and delete buttons if the selected ad belongs to the logged-in user
                 buttonEditAd.Visible = selectedAd.CreatedBy == UserManager.LoggedInUser.Id;
                 buttonDeleteAd.Visible = selectedAd.CreatedBy == UserManager.LoggedInUser.Id;
             }
             else
             {
-                // Hide edit and delete buttons if no ad is selected or if the user is not logged in
                 buttonEditAd.Visible = false;
                 buttonDeleteAd.Visible = false;
             }
         }
-        public void UpdateLoggedInUserLabel()
+        private void UpdateLoggedInUserLabel()
         {
             if (UserManager.LoggedInUser != null)
             {
-                labelLoggedInStatus.Text = $"Logged in as: {UserManager.LoggedInUser.Username}";
+                labelLoggedInStatus.Text = $"Inloggad som: {UserManager.LoggedInUser.Username}";
             }
             else
             {
-                labelLoggedInStatus.Text = "ej inloggad"; // Display when no user is logged in
+                labelLoggedInStatus.Text = "Ej inloggad, skapa ett konto genom att klicka på hantera användare!";
             }
         }
 
@@ -86,18 +82,16 @@ namespace AnnonsDatabas
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            string searchTerm = textBoxSearch.Text.Trim(); // Get the search term from the TextBox
-            int? selectedCategoryId = comboBoxCategories.SelectedValue as int?; // Get the selected category ID
+            string searchTerm = textBoxSearch.Text.Trim();
+            int? selectedCategoryId = comboBoxCategories.SelectedValue as int?;
 
             AdvertisementRepo repo = new AdvertisementRepo();
 
-            // Call GetList with the search parameters
             var filteredAdvertisements = repo.SearchAdvertisements(searchTerm, selectedCategoryId);
 
-            // Update the ListBox with the filtered results
             listBoxAds.DataSource = new BindingSource { DataSource = filteredAdvertisements };
-            listBoxAds.DisplayMember = "ToString"; // or however you want to display it
-            listBoxAds.ValueMember = "Id"; // assuming this is the ID of the advertisement
+            listBoxAds.DisplayMember = "ToString";
+            listBoxAds.ValueMember = "Id";
         }
 
         private void buttonPriceSort_Click(object sender, EventArgs e)
@@ -142,19 +136,19 @@ namespace AnnonsDatabas
                 if (result == DialogResult.Yes)
                 {
                     var adRepo = new AdvertisementRepo();
-                    adRepo.Delete(selectedAd.Id); // Delete the selected advertisement
-                    LoadAdverts(); // Refresh the adverts
-                    UpdateButtonVisibility(); // Update button visibility after deletion
+                    adRepo.Delete(selectedAd.Id);
+                    LoadAdverts();
+                    UpdateButtonVisibility();
                 }
             }
         }
 
         private void buttonCreateAd_Click(object sender, EventArgs e)
         {
-            var createForm = new FormEdit(null, _categories); // Pass null for advertisement, and pass categories
+            var createForm = new FormEdit(null, _categories);
             if (createForm.ShowDialog() == DialogResult.OK)
             {
-                LoadAdverts(); // Refresh the advertisements list after creation
+                LoadAdverts();
             }
         }
 
@@ -162,16 +156,16 @@ namespace AnnonsDatabas
         {
             if (listBoxAds.SelectedItem is Advertisement selectedAd)
             {
-                var editForm = new FormEdit(selectedAd, _categories); // Pass the selected advertisement and categories
+                var editForm = new FormEdit(selectedAd, _categories);
 
                 if (editForm.ShowDialog() == DialogResult.OK)
                 {
-                    LoadAdverts(); // Refresh the advertisements list after editing
+                    LoadAdverts();
                 }
             }
             else
             {
-                MessageBox.Show("Please select an advertisement to edit.");
+                MessageBox.Show("Välj en annons att redigera.");
             }
         }
     }

@@ -142,9 +142,9 @@
             labelLoggedInStatus.AutoSize = true;
             labelLoggedInStatus.Location = new Point(12, 7);
             labelLoggedInStatus.Name = "labelLoggedInStatus";
-            labelLoggedInStatus.Size = new Size(85, 20);
+            labelLoggedInStatus.Size = new Size(460, 20);
             labelLoggedInStatus.TabIndex = 11;
-            labelLoggedInStatus.Text = "Ej Inloggad";
+            labelLoggedInStatus.Text = "Ej inloggad, skapa ett konto genom att klicka på hantera användare!";
             // 
             // buttonCreateAd
             // 
