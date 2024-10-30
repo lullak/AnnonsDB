@@ -89,7 +89,7 @@ namespace AnnonsDatabas
 
             var filteredAdvertisements = repo.SearchAdvertisements(searchTerm, selectedCategoryId);
 
-            listBoxAds.DataSource = new BindingSource { DataSource = filteredAdvertisements };
+            listBoxAds.DataSource = filteredAdvertisements;
             listBoxAds.DisplayMember = "ToString";
             listBoxAds.ValueMember = "Id";
         }
