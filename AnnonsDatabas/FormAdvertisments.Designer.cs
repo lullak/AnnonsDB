@@ -37,11 +37,13 @@
             label1 = new Label();
             buttonLogin = new Button();
             listBoxAds = new ListBox();
+            buttonClear = new Button();
+            labelLoggedInStatus = new Label();
             SuspendLayout();
             // 
             // textBoxSearch
             // 
-            textBoxSearch.Location = new Point(12, 30);
+            textBoxSearch.Location = new Point(12, 44);
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(387, 27);
             textBoxSearch.TabIndex = 0;
@@ -53,10 +55,11 @@
             comboBoxCategories.Name = "comboBoxCategories";
             comboBoxCategories.Size = new Size(168, 28);
             comboBoxCategories.TabIndex = 1;
+            comboBoxCategories.SelectedIndexChanged += comboBoxCategories_SelectedIndexChanged;
             // 
             // buttonSearch
             // 
-            buttonSearch.Location = new Point(405, 30);
+            buttonSearch.Location = new Point(417, 43);
             buttonSearch.Name = "buttonSearch";
             buttonSearch.Size = new Size(94, 29);
             buttonSearch.TabIndex = 2;
@@ -104,26 +107,48 @@
             // 
             // buttonLogin
             // 
-            buttonLogin.Location = new Point(859, 622);
+            buttonLogin.Location = new Point(12, 622);
             buttonLogin.Name = "buttonLogin";
             buttonLogin.Size = new Size(161, 29);
             buttonLogin.TabIndex = 8;
             buttonLogin.Text = "Hantera Användare";
             buttonLogin.UseVisualStyleBackColor = true;
+            buttonLogin.Click += buttonLogin_Click;
             // 
             // listBoxAds
             // 
             listBoxAds.FormattingEnabled = true;
             listBoxAds.Location = new Point(12, 132);
             listBoxAds.Name = "listBoxAds";
-            listBoxAds.Size = new Size(754, 464);
+            listBoxAds.Size = new Size(1008, 484);
             listBoxAds.TabIndex = 9;
+            // 
+            // buttonClear
+            // 
+            buttonClear.Location = new Point(926, 97);
+            buttonClear.Name = "buttonClear";
+            buttonClear.Size = new Size(94, 29);
+            buttonClear.TabIndex = 10;
+            buttonClear.Text = "Rensa";
+            buttonClear.UseVisualStyleBackColor = true;
+            buttonClear.Click += buttonClear_Click;
+            // 
+            // labelLoggedInStatus
+            // 
+            labelLoggedInStatus.AutoSize = true;
+            labelLoggedInStatus.Location = new Point(12, 7);
+            labelLoggedInStatus.Name = "labelLoggedInStatus";
+            labelLoggedInStatus.Size = new Size(85, 20);
+            labelLoggedInStatus.TabIndex = 11;
+            labelLoggedInStatus.Text = "Ej Inloggad";
             // 
             // FormAdvertisments
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1032, 663);
+            Controls.Add(labelLoggedInStatus);
+            Controls.Add(buttonClear);
             Controls.Add(listBoxAds);
             Controls.Add(buttonLogin);
             Controls.Add(label1);
@@ -150,5 +175,7 @@
         private Label label1;
         private Button buttonLogin;
         private ListBox listBoxAds;
+        private Button buttonClear;
+        private Label labelLoggedInStatus;
     }
 }

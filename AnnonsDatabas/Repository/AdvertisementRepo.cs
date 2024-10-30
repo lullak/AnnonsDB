@@ -51,10 +51,13 @@ namespace AnnonsDatabas.Repository
         public List<Advertisement> GetList(string sortBy = "CreatedDate", int? categoryId = null)
         {
             string sql = "SELECT Id, Title, AdDescription, Price, CategoryId, CreatedBy, CreatedDate FROM Advertisement";
-            // If categoryId is provided, add a WHERE clause
+
+            // Only add WHERE clause if categoryId is specified
+            List<SqlParameter> parameters = new List<SqlParameter>();
             if (categoryId.HasValue)
             {
                 sql += " WHERE CategoryId = @CategoryId";
+                parameters.Add(new SqlParameter("@CategoryId", categoryId.Value));
             }
 
             // Add ORDER BY based on sortBy parameter
@@ -69,25 +72,60 @@ namespace AnnonsDatabas.Repository
                     break;
             }
 
-            // Prepare SQL parameters
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            if (categoryId.HasValue)
-            {
-                parameters.Add(new SqlParameter("@CategoryId", categoryId.Value));
-            }
-            DataTable data = DataContext.ExecuteQueryReturnTable(sql, new List<SqlParameter>());
+            DataTable data = DataContext.ExecuteQueryReturnTable(sql, parameters);
 
             List<Advertisement> advertisements = new List<Advertisement>();
             foreach (DataRow row in data.Rows)
             {
                 advertisements.Add(new Advertisement(
-                    (int)row.ItemArray[0],               
-                    row.ItemArray[1].ToString(),          
-                    row.ItemArray[2].ToString(),          
-                    (decimal)row.ItemArray[3],            
-                    (int)row.ItemArray[4],                
-                    (int)row.ItemArray[5],                
-                    Convert.ToDateTime(row.ItemArray[6])  
+                    (int)row["Id"],
+                    row["Title"].ToString(),
+                    row["AdDescription"].ToString(),
+                    (decimal)row["Price"],
+                    (int)row["CategoryId"],
+                    (int)row["CreatedBy"],
+                    Convert.ToDateTime(row["CreatedDate"])
+                ));
+            }
+
+            return advertisements;
+        }
+
+        public List<Advertisement> SearchAdvertisements(string title, int? categoryId = null)
+        {
+            // Build the base SQL query
+            string sql = "SELECT Id, Title, AdDescription, Price, CategoryId, CreatedBy, CreatedDate FROM Advertisement WHERE 1=1";
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            // If a title is provided, add a condition for it
+            if (!string.IsNullOrEmpty(title))
+            {
+                sql += " AND Title LIKE @Title";
+                parameters.Add(new SqlParameter("@Title", "%" + title + "%")); // Using LIKE for partial matches
+            }
+
+            // If a categoryId is provided, add a condition for it
+            if (categoryId.HasValue)
+            {
+                sql += " AND CategoryId = @CategoryId";
+                parameters.Add(new SqlParameter("@CategoryId", categoryId.Value));
+            }
+
+            // Execute the query
+            DataTable data = DataContext.ExecuteQueryReturnTable(sql, parameters);
+
+            List<Advertisement> advertisements = new List<Advertisement>();
+            foreach (DataRow row in data.Rows)
+            {
+                advertisements.Add(new Advertisement(
+                    (int)row["Id"],
+                    row["Title"].ToString(),
+                    row["AdDescription"].ToString(),
+                    (decimal)row["Price"],
+                    (int)row["CategoryId"],
+                    (int)row["CreatedBy"],
+                    Convert.ToDateTime(row["CreatedDate"])
                 ));
             }
 
