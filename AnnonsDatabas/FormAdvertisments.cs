@@ -132,7 +132,7 @@ namespace AnnonsDatabas
         {
             if (listBoxAds.SelectedItem is Advertisement selectedAd)
             {
-                var result = MessageBox.Show("Are you sure you want to delete this advertisement?", "Confirmation", MessageBoxButtons.YesNo);
+                var result = MessageBox.Show("Är du säker att du vill ta bort annonsen?", "Bekräfta", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     var adRepo = new AdvertisementRepo();
