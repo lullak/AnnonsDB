@@ -25,7 +25,7 @@ namespace AnnonsDatabas.Repository
                     break;
                 case "CreatedDate":
                 default:
-                    sql += " ORDER BY CreatedDate";
+                    sql += " ORDER BY CreatedDate desc";
                     break;
             }
 

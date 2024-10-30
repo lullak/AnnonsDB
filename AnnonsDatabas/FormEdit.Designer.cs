@@ -57,7 +57,9 @@
             // 
             // numericUpDownPrice
             // 
+            numericUpDownPrice.Increment = new decimal(new int[] { 100, 0, 0, 0 });
             numericUpDownPrice.Location = new Point(66, 158);
+            numericUpDownPrice.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
             numericUpDownPrice.Name = "numericUpDownPrice";
             numericUpDownPrice.Size = new Size(596, 27);
             numericUpDownPrice.TabIndex = 2;

@@ -23,7 +23,7 @@
 
         public override string ToString()
         {
-            return $"{Title} - {Price:C} - {CreatedDate:yyyy-MM-dd}\n {AdDescription}";
+            return $"{CreatedDate:yyyy-MM-dd} - {Title} - {AdDescription} - {Price:C} ";
         }
     }
 }
