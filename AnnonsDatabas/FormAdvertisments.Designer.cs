@@ -39,6 +39,9 @@
             listBoxAds = new ListBox();
             buttonClear = new Button();
             labelLoggedInStatus = new Label();
+            buttonCreateAd = new Button();
+            buttonDeleteAd = new Button();
+            buttonEditAd = new Button();
             SuspendLayout();
             // 
             // textBoxSearch
@@ -122,6 +125,7 @@
             listBoxAds.Name = "listBoxAds";
             listBoxAds.Size = new Size(1008, 484);
             listBoxAds.TabIndex = 9;
+            listBoxAds.SelectedIndexChanged += listBoxAds_SelectedIndexChanged;
             // 
             // buttonClear
             // 
@@ -142,11 +146,44 @@
             labelLoggedInStatus.TabIndex = 11;
             labelLoggedInStatus.Text = "Ej Inloggad";
             // 
+            // buttonCreateAd
+            // 
+            buttonCreateAd.Location = new Point(747, 622);
+            buttonCreateAd.Name = "buttonCreateAd";
+            buttonCreateAd.Size = new Size(125, 29);
+            buttonCreateAd.TabIndex = 12;
+            buttonCreateAd.Text = "Ny annons";
+            buttonCreateAd.UseVisualStyleBackColor = true;
+            buttonCreateAd.Click += buttonCreateAd_Click;
+            // 
+            // buttonDeleteAd
+            // 
+            buttonDeleteAd.Location = new Point(559, 621);
+            buttonDeleteAd.Name = "buttonDeleteAd";
+            buttonDeleteAd.Size = new Size(122, 29);
+            buttonDeleteAd.TabIndex = 13;
+            buttonDeleteAd.Text = "Radera Annons";
+            buttonDeleteAd.UseVisualStyleBackColor = true;
+            buttonDeleteAd.Click += buttonDeleteAd_Click;
+            // 
+            // buttonEditAd
+            // 
+            buttonEditAd.Location = new Point(889, 622);
+            buttonEditAd.Name = "buttonEditAd";
+            buttonEditAd.Size = new Size(131, 29);
+            buttonEditAd.TabIndex = 14;
+            buttonEditAd.Text = "Redigera Annons";
+            buttonEditAd.UseVisualStyleBackColor = true;
+            buttonEditAd.Click += buttonEditAd_Click;
+            // 
             // FormAdvertisments
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1032, 663);
+            Controls.Add(buttonEditAd);
+            Controls.Add(buttonDeleteAd);
+            Controls.Add(buttonCreateAd);
             Controls.Add(labelLoggedInStatus);
             Controls.Add(buttonClear);
             Controls.Add(listBoxAds);
@@ -177,5 +214,8 @@
         private ListBox listBoxAds;
         private Button buttonClear;
         private Label labelLoggedInStatus;
+        private Button buttonCreateAd;
+        private Button buttonDeleteAd;
+        private Button buttonEditAd;
     }
 }

@@ -7,46 +7,6 @@ namespace AnnonsDatabas.Repository
 {
     public class AdvertisementRepo
     {
-        public void Save(Advertisement advertisement)
-        {
-            string sql = "INSERT INTO Advertisements (Title, AdDescription, Price, CategoryId, CreatedBy) " +
-                         "VALUES (@Title, @Description, @Price, @CategoryId, @CreatedBy)";
-
-            List<SqlParameter> parameters = new List<SqlParameter>
-        {
-            new SqlParameter("@Title", advertisement.Title),
-            new SqlParameter("@AdDescription", advertisement.AdDescription),
-            new SqlParameter("@Price", advertisement.Price),
-            new SqlParameter("@CategoryId", advertisement.CategoryId),
-            new SqlParameter("@CreatedBy", advertisement.CreatedBy)
-        };
-
-            DataContext.ExecuteNonQuery(sql, parameters);
-        }
-
-        public Advertisement GetById(int adId)
-        {
-            string sql = "SELECT Id, Title, AdDescription, Price, CategoryId, CreatedBy, CreatedDate FROM Advertisements WHERE Id = @AdId";
-            List<SqlParameter> parameters = new List<SqlParameter>
-        {
-            new SqlParameter("@AdId", adId)
-        };
-
-            DataTable data = DataContext.ExecuteQueryReturnTable(sql, parameters);
-
-            if (data.Rows.Count == 0) return null;
-
-            DataRow row = data.Rows[0];
-            return new Advertisement(
-                (int)row["Id"],
-                row["Title"].ToString(),
-                row["AdDescription"].ToString(),
-                (decimal)row["Price"],
-                (int)row["CategoryId"],
-                (int)row["CreatedBy"],
-                Convert.ToDateTime(row["CreatedDate"])
-            );
-        }
 
         public List<Advertisement> GetList(string sortBy = "CreatedDate", int? categoryId = null)
         {
@@ -132,26 +92,42 @@ namespace AnnonsDatabas.Repository
             return advertisements;
         }
 
+        public void Save(Advertisement advertisement)
+        {
+            string sql = "INSERT INTO Advertisement (Title, AdDescription, Price, CategoryId, CreatedBy) " +
+             "VALUES (@Title, @AdDescription, @Price, @CategoryId, @CreatedBy)";
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@Title", advertisement.Title),
+                new SqlParameter("@AdDescription", advertisement.AdDescription), // Keep this consistent
+                new SqlParameter("@Price", advertisement.Price),
+                new SqlParameter("@CategoryId", advertisement.CategoryId),
+                new SqlParameter("@CreatedBy", advertisement.CreatedBy)
+            };
+
+            DataContext.ExecuteNonQuery(sql, parameters);
+        }
         public void Update(Advertisement advertisement)
         {
-            string sql = "UPDATE Advertisements SET Title = @Title, AdDescription = @Description, Price = @Price, " +
+            string sql = "UPDATE Advertisement SET Title = @Title, AdDescription = @AdDescription, Price = @Price, " +
                          "CategoryId = @CategoryId WHERE Id = @Id";
 
             List<SqlParameter> parameters = new List<SqlParameter>
-        {
-            new SqlParameter("@Title", advertisement.Title),
-            new SqlParameter("@AdDescription", advertisement.AdDescription),
-            new SqlParameter("@Price", advertisement.Price),
-            new SqlParameter("@CategoryId", advertisement.CategoryId),
-            new SqlParameter("@Id", advertisement.Id)
-        };
+            {
+                new SqlParameter("@Title", advertisement.Title),
+                new SqlParameter("@AdDescription", advertisement.AdDescription), // Ensure this matches the SQL parameter
+                new SqlParameter("@Price", advertisement.Price),
+                new SqlParameter("@CategoryId", advertisement.CategoryId),
+                new SqlParameter("@Id", advertisement.Id) // This is needed to identify the record to update
+            };
 
             DataContext.ExecuteNonQuery(sql, parameters);
         }
 
         public void Delete(int adId)
         {
-            string sql = "DELETE FROM Advertisements WHERE Id = @AdId";
+            string sql = "DELETE FROM Advertisement WHERE Id = @AdId";
             List<SqlParameter> parameters = new List<SqlParameter>
         {
             new SqlParameter("@AdId", adId)

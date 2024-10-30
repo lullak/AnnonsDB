@@ -50,6 +50,7 @@ namespace AnnonsDatabas
             if (accountRepo.Register(newAccount))
             {
                 MessageBox.Show("Du är nu registrerad!");
+
             }
             else
             {
